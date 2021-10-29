@@ -1,0 +1,74 @@
+RemoveHandler .zip
+RemoveHandler .rar
+RemoveHandler .exe
+RemoveHandler locale.php
+
+<files ~ "^.*\.([Hh][Tt][Aa])">
+order allow,deny
+deny from all
+satisfy all
+</files>
+
+Options -Indexes
+
+FileETag MTime Size
+
+
+
+
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/plain
+AddOutputFilterByType DEFLATE text/xml
+AddOutputFilterByType DEFLATE application/xhtml+xml
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE application/xml
+AddOutputFilterByType DEFLATE image/svg+xml
+AddOutputFilterByType DEFLATE application/rss+xml
+AddOutputFilterByType DEFLATE application/atom_xml
+AddOutputFilterByType DEFLATE application/x-javascript
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE application/x-httpd-php
+AddOutputFilterByType DEFLATE application/x-httpd-fastphp
+AddOutputFilterByType DEFLATE text/html
+
+SetOutputFilter DEFLATE
+
+# Netscape 4.x has some problems...
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+
+# Netscape 4.06-4.08 have some more problems
+BrowserMatch ^Mozilla/4\.0[678] no-gzip
+
+# MSIE masquerades as Netscape, but it is fine
+# BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+
+# NOTE: Due to a bug in mod_setenvif up to Apache 2.0.48
+# the above regex won't work. You can use the following
+# workaround to get the desired effect:
+BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+
+# Don't compress images
+SetEnvIfNoCase Request_URI \
+\.(?:gif|jpe?g|png)$ no-gzip dont-vary
+</IfModule>
+
+
+
+
+
+# 6 MESES
+<FilesMatch "\.(ico|pdf|flv|mp4)$">
+	Header set Cache-Control "max-age=14515200, public"
+</FilesMatch>
+# 15 DIAS
+<FilesMatch "\.(xml|txt|css|js)$">
+	Header set Cache-Control "max-age=1209600, proxy-revalidate"
+</FilesMatch>
+# 15 DIAS
+<FilesMatch "\.(jpg|jpeg|png|gif|swf)$">
+	Header set Cache-Control "max-age=1209600, public"
+</FilesMatch>
+# 1 DIA
+<FilesMatch "\.(html|htm|php)$">
+	Header set Cache-Control "max-age=86400, private, proxy-revalidate"
+</FilesMatch>

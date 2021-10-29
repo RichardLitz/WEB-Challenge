@@ -1,0 +1,149 @@
+<?php foreach($_POST as $ncampo=>$val){$$ncampo=($val);}foreach($_GET as $ncampo=>$val){$$ncampo=stripslashes($val);}function f_VerificaValorDataNulo($Variavel){$Valor="";if(trim($Variavel)==""){$Valor="NULL";}else{$Valor="'".FormataData(htmlspecialchars(addslashes(stripslashes($Variavel))))."'";}return $Valor;}function f_VerificaValorImagemNulo($Variavel){$Valor="";if(trim($Variavel)==""){$Valor="NULL";}else{$Valor="'".trim(htmlspecialchars(addslashes(stripslashes($Variavel))))."'";}return $Valor;}function f_VerificaValorStringNulo($Variavel){$Valor="";if(trim($Variavel)==""){$Valor="NULL";}else{$Valor="'".(trim(htmlspecialchars(addslashes(stripslashes(($Variavel))))))."'";}return $Valor;}function f_VerificaValorNumericoNulo($Variavel){$Valor="";if(trim($Variavel)==""){$Valor="NULL";}else{$Valor=trim(htmlspecialchars(addslashes(stripslashes(str_replace("_","",$Variavel)))));}return $Valor;}function f_VerificaValorPesquisaNulo($Variavel,$Tipo){$Valor="";if(trim($Variavel)==""){$Valor="NULL";}else{if($Tipo=="INICIAL"){$Valor="'%".trim(htmlspecialchars(addslashes(stripslashes(($Variavel)))))."'";}else if($Tipo=="FINAL"){$Valor="'".trim(htmlspecialchars(addslashes(stripslashes(($Variavel)))))."%'";}else{$Valor="'%".trim(htmlspecialchars(addslashes(stripslashes(($Variavel)))))."%'";}}return $Valor;}function f_VerificaValorNumericoZero($Variavel){$Valor="";if(trim($Variavel)==""){$Valor=0;}else{$Valor=trim(htmlspecialchars(addslashes(stripslashes($Variavel))));}return $Valor;}function f_VerificaValorMoedaNulo($Variavel){$Valor="";if(trim($Variavel)==""){$Valor="NULL";}else{$Valor=htmlspecialchars(addslashes(stripslashes(trim(str_replace(",",".",str_replace(" ","",str_replace("R","",str_replace("r","",str_replace("$","",str_replace(".","",$Variavel))))))))));}return $Valor;}function f_GeraToken($length=100){$characters='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';$randomString='';for($i=0;$i<$length;$i++){$randomString.=$characters[rand(0,strlen($characters)-1)];}return $randomString;}function f_GeraSenhaAleatoria($length=8){$characters='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';$randomString='';for($i=0;$i<$length;$i++){$randomString.=$characters[rand(0,strlen($characters)-1)];}return $randomString;}function f_CriptografaSenha($Senha){$SenhaCrip=md5(base64_encode("sSCryptoxXAdminSystemD").$Senha.base64_encode("SenhaCrypMd5SistXxB"));return $SenhaCrip;}function FormataData($Data){$Data=explode("/",$Data);$Data02=$Data[2]."-".$Data[1]."-".$Data[0];return $Data02;}function f_UrlAmigavel($Varialvel){$Valor=str_replace("https","",str_replace("http","",str_replace("/","-",str_replace(" ","-",str_replace(" a "," ",str_replace(" o "," ",str_replace(" e "," ",str_replace(" do "," ",str_replace(" da "," ",str_replace(" de "," ",str_replace(";","",str_replace("'","",str_replace(",","",str_replace('"',"",str_replace(":","",str_replace("'","",str_replace("&","",SemAcento(strtolower($Varialvel)))))))))))))))))));return $Valor;}function f_PalavraFiltroClassificado($ValorP){$ValorPalavra=str_replace(" atras "," ",str_replace(" tras "," ",str_replace(" dentro "," ",str_replace(" sobre "," ",str_replace(" entre "," ",str_replace(" desde "," ",str_replace(" contra "," ",str_replace(" perante "," ",str_replace(" ante "," ",str_replace(" quando "," ",str_replace(" com "," ",str_replace(" qualquer "," ",str_replace(" qual "," ",str_replace(" que "," ",str_replace(" por "," ",str_replace(" em "," ",str_replace(" um "," ",str_replace(" uma "," ",str_replace(" para "," ",str_replace(" pra "," ",str_replace(" e "," ",str_replace(" a "," ",str_replace(" do "," ",str_replace(" de "," ",str_replace(" da "," ",str_replace(" tua "," ",str_replace(" teu "," ",str_replace(" as "," ",str_replace(" per "," ",str_replace(" ate "," ",str_replace(" ou "," ",str_replace("-","",str_replace("_","",str_replace("*","",str_replace(". ","",str_replace(":","",str_replace(", ","",str_replace(";","",str_replace("/","",$ValorP)))))))))))))))))))))))))))))))))))))));return $ValorPalavra;}function f_PalavraChave($ValorP){$ValorPalavra=str_replace(" atras,","",str_replace(" tras,","",str_replace(" dentro,","",str_replace(" sobre,","",str_replace(" entre,","",str_replace(" desde,","",str_replace(" contra,","",str_replace(" perante,","",str_replace(" ante,","",str_replace(" quando,","",str_replace(" com,","",str_replace(" qualquer,","",str_replace(" qual,","",str_replace(" que,","",str_replace(" por,","",str_replace(" em,","",str_replace(" um,","",str_replace(" uma,","",str_replace(" para,","",str_replace(" pra,","",str_replace(" e,","",str_replace(" a,","",str_replace(" do,","",str_replace(" de,","",str_replace(" da,","",str_replace(" tua,","",str_replace(" teu,","",str_replace(" as,","",str_replace(" per,","",str_replace(" ate,","",str_replace(" ou,","",str_replace("/,","",str_replace("http,","",str_replace("https,","",str_replace(":,","",str_replace("-",", ",f_UrlAmigavel($ValorP)))))))))))))))))))))))))))))))))))));return $ValorPalavra;}function f_AntiSqlInjection($texto){$check[1]=chr(34);$check[2]=chr(39);$check[3]=chr(92);$check[4]=chr(96);$check[19]="1=1";$check[20]='or 1';$check[22]='INFORMATION_SCHEMA';$y=1;$x=sizeof($check);while($y<=$x){$valor="";$valor=$check[$y];if((!empty($valor)||(!empty($texto)))){$target=strpos($texto,$valor);if(($target!==false)&&(!empty($target))){$texto=str_replace($valor,"",$texto);}}$y++;}$texto=trim($texto);return $texto;}function phpinfo_array(){ob_start();phpinfo(INFO_GENERAL);$info_arr=array();$info_lines=explode("\n",strip_tags(ob_get_clean(),"<tr><td><h2>"));$cat="General";foreach($info_lines as $line){preg_match("~<h2>(.*)</h2>~",$line,$title)?$cat=$title[1]:null;if(preg_match("~<tr><td[^>]+>([^<]*)</td><td[^>]+>([^<]*)</td></tr>~",$line,$val)){$info_arr[$cat][$val[1]]=$val[2];$Valor=$val[2];break;}}return $Valor;}function Descobre_Navegador(){$u_agent=$_SERVER['HTTP_USER_AGENT'];$bname='Unknown';$platform='Unknown';$version="";if(preg_match('/MSIE/i',$u_agent)&&!preg_match('/Opera/i',$u_agent)){$bname='Internet Explorer';$ub="MSIE";}elseif(preg_match('/Firefox/i',$u_agent)){$bname='Mozilla Firefox';$ub="Firefox";}elseif(preg_match('/Chrome/i',$u_agent)){$bname='Google Chrome';$ub="Chrome";}elseif(preg_match('/Safari/i',$u_agent)){$bname='Apple Safari';$ub="Safari";}elseif(preg_match('/Opera/i',$u_agent)){$bname='Opera';$ub="Opera";}elseif(preg_match('/Netscape/i',$u_agent)){$bname='Netscape';$ub="Netscape";}if($bname=='Internet Explorer'){$Teste=explode(";",$u_agent);$SO=trim($Teste[2]);}else{$Teste=explode("(",$u_agent);$Teste2=explode(";",trim($Teste[1]));$SO=trim($Teste2[0]);}$known=array('Version',$ub,'other');$pattern='#(?<browser>'.join('|',$known).')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';if(!preg_match_all($pattern,$u_agent,$matches)){}$i=count($matches['browser']);if($i!=1){if(strripos($u_agent,"Version")<strripos($u_agent,$ub)){$version=$matches['version'][0];}else{$version=$matches['version'][1];}}else{$version=$matches['version'][0];}$Servidor=explode(" ",phpinfo_array());if($version==null||$version==""){$version="?";}return array('userAgent'=>$u_agent,'name'=>$bname,'version'=>$version,'platform'=>trim($SO),'pattern'=>$pattern,'servidor'=>$Servidor[1]);}function f_RetornaParteTexto($Texto,$QtdPalavra){$frase=$Texto;$divide=explode(" ",$frase);$total=count($divide);$soma=0;for($i=0;$i<$total;$i++){$f=$divide[$i];$len=strlen($f);$soma=$soma+intval($len);$soma++;if($i>=$QtdPalavra)break;}$TextoResumo="";$TextoResumo=substr($frase,0,$soma);return $TextoResumo;}function f_DataExtenso($Data){$Data02=explode("/",$Data);$Variavel="";$Variavel=$Data02[1];$MesExt="";if((trim($Variavel)==1)OR(trim($Variavel)=="01")){$MesExt="Janeiro";}else if((trim($Variavel)==2)OR(trim($Variavel)=="02")){$MesExt="Fevereiro";}else if((trim($Variavel)==3)OR(trim($Variavel)=="03")){$MesExt="Março";}else if((trim($Variavel)==4)OR(trim($Variavel)=="04")){$MesExt="Abril";}else if((trim($Variavel)==5)OR(trim($Variavel)=="05")){$MesExt="Maio";}else if((trim($Variavel)==6)OR(trim($Variavel)=="06")){$MesExt="Junho";}else if((trim($Variavel)==7)OR(trim($Variavel)=="07")){$MesExt="Julho";}else if((trim($Variavel)==8)OR(trim($Variavel)=="08")){$MesExt="Agosto";}else if((trim($Variavel)==9)OR(trim($Variavel)=="09")){$MesExt="Setembro";}else if((trim($Variavel)==10)OR(trim($Variavel)=="10")){$MesExt="Outubro";}else if((trim($Variavel)==11)OR(trim($Variavel)=="11")){$MesExt="Novembro";}else if((trim($Variavel)==12)OR(trim($Variavel)=="12")){$MesExt="Dezembro";}$DataExtenso="";$DataExtenso=$Data02[0]." de ".$MesExt." de ".$Data02[2];return $DataExtenso;}function f_MesExtenso($Variavel){$Data02=explode("/",$Variavel);$Variavel="";$Variavel=$Data02[1];$MesExt="";if((trim($Variavel)==1)OR(trim($Variavel)=="01")){$MesExt="Janeiro";}else if((trim($Variavel)==2)OR(trim($Variavel)=="02")){$MesExt="Fevereiro";}else if((trim($Variavel)==3)OR(trim($Variavel)=="03")){$MesExt="Março";}else if((trim($Variavel)==4)OR(trim($Variavel)=="04")){$MesExt="Abril";}else if((trim($Variavel)==5)OR(trim($Variavel)=="05")){$MesExt="Maio";}else if((trim($Variavel)==6)OR(trim($Variavel)=="06")){$MesExt="Junho";}else if((trim($Variavel)==7)OR(trim($Variavel)=="07")){$MesExt="Julho";}else if((trim($Variavel)==8)OR(trim($Variavel)=="08")){$MesExt="Agosto";}else if((trim($Variavel)==9)OR(trim($Variavel)=="09")){$MesExt="Setembro";}else if((trim($Variavel)==10)OR(trim($Variavel)=="10")){$MesExt="Outubro";}else if((trim($Variavel)==11)OR(trim($Variavel)=="11")){$MesExt="Novembro";}else if((trim($Variavel)==12)OR(trim($Variavel)=="12")){$MesExt="Dezembro";}return $MesExt;}function f_MesAbreviado($Variavel){$Data02=explode("/",$Variavel);$Variavel="";$Variavel=$Data02[1];$MesExt="";if((trim($Variavel)==1)OR(trim($Variavel)=="01")){$MesExt="Jan";}else if((trim($Variavel)==2)OR(trim($Variavel)=="02")){$MesExt="Fev";}else if((trim($Variavel)==3)OR(trim($Variavel)=="03")){$MesExt="Mar";}else if((trim($Variavel)==4)OR(trim($Variavel)=="04")){$MesExt="Abr";}else if((trim($Variavel)==5)OR(trim($Variavel)=="05")){$MesExt="Mai";}else if((trim($Variavel)==6)OR(trim($Variavel)=="06")){$MesExt="Jun";}else if((trim($Variavel)==7)OR(trim($Variavel)=="07")){$MesExt="Jul";}else if((trim($Variavel)==8)OR(trim($Variavel)=="08")){$MesExt="Ago";}else if((trim($Variavel)==9)OR(trim($Variavel)=="09")){$MesExt="Set";}else if((trim($Variavel)==10)OR(trim($Variavel)=="10")){$MesExt="Out";}else if((trim($Variavel)==11)OR(trim($Variavel)=="11")){$MesExt="Nov";}else if((trim($Variavel)==12)OR(trim($Variavel)=="12")){$MesExt="Dez";}return $MesExt;}function f_ApenasMes($Variavel){$MesExt="";if((trim($Variavel)==1)OR(trim($Variavel)=="01")){$MesExt="Janeiro";}else if((trim($Variavel)==2)OR(trim($Variavel)=="02")){$MesExt="Fevereiro";}else if((trim($Variavel)==3)OR(trim($Variavel)=="03")){$MesExt="Março";}else if((trim($Variavel)==4)OR(trim($Variavel)=="04")){$MesExt="Abril";}else if((trim($Variavel)==5)OR(trim($Variavel)=="05")){$MesExt="Maio";}else if((trim($Variavel)==6)OR(trim($Variavel)=="06")){$MesExt="Junho";}else if((trim($Variavel)==7)OR(trim($Variavel)=="07")){$MesExt="Julho";}else if((trim($Variavel)==8)OR(trim($Variavel)=="08")){$MesExt="Agosto";}else if((trim($Variavel)==9)OR(trim($Variavel)=="09")){$MesExt="Setembro";}else if((trim($Variavel)==10)OR(trim($Variavel)=="10")){$MesExt="Outubro";}else if((trim($Variavel)==11)OR(trim($Variavel)=="11")){$MesExt="Novembro";}else if((trim($Variavel)==12)OR(trim($Variavel)=="12")){$MesExt="Dezembro";}return $MesExt;}function SemAcento($var){$var=str_replace("'","",$var);$var=str_replace("ã","a",$var);$var=str_replace("á","a",$var);$var=str_replace("à","a",$var);$var=str_replace("â","a",$var);$var=str_replace("ª","a",$var);$var=str_replace("ê","e",$var);$var=str_replace("è","e",$var);$var=str_replace("é","e",$var);$var=str_replace("í","i",$var);$var=str_replace("ì","i",$var);$var=str_replace("î","i",$var);$var=str_replace("õ","o",$var);$var=str_replace("ô","o",$var);$var=str_replace("ó","o",$var);$var=str_replace("ò","o",$var);$var=str_replace("û","u",$var);$var=str_replace("ú","u",$var);$var=str_replace("ù","u",$var);$var=str_replace("ç","c",$var);$var=str_replace("ñ","n",$var);$var=str_replace("%","",$var);$var=str_replace("(","",$var);$var=str_replace(")","",$var);$var=str_replace("?","",$var);$var=str_replace("Ã","a",$var);$var=str_replace("Á","a",$var);$var=str_replace("À","a",$var);$var=str_replace("Â","a",$var);$var=str_replace("Ê","e",$var);$var=str_replace("É","e",$var);$var=str_replace("È","e",$var);$var=str_replace("Í","i",$var);$var=str_replace("Ì","i",$var);$var=str_replace("Î","i",$var);$var=str_replace("Õ","o",$var);$var=str_replace("Ô","o",$var);$var=str_replace("Ó","o",$var);$var=str_replace("Ò","o",$var);$var=str_replace("Û","u",$var);$var=str_replace("Ú","u",$var);$var=str_replace("Ù","u",$var);$var=str_replace("Ç","c",$var);$var=str_replace("Ñ","n",$var);$var=strtolower($var);return $var;}function Formata_Hora($Valor02,$Valor01){$TempoFinal=explode("-",$Valor02);$TempoFim=explode(":",$TempoFinal[1]);$HoraFim=$TempoFim[0];$MinutoFim=$TempoFim[1];$SegundoFim=str_replace(" PM","",str_replace(" AM","",$TempoFim[2]));$TempoInicial=explode("-",$Valor01);$TempoInic=explode(":",$TempoInicial[1]);$HoraInic=$TempoInic[0];$MinutoInic=$TempoInic[1];$SegundoInic=str_replace(" PM","",str_replace(" AM","",$TempoInic[2]));if(($SegundoFim==0)||($SegundoInic==0)){if($SegundoFim==0){$SegundoFim=60;}if($SegundoInic==0){$SegundoInic=60;}}if(($MinutoFim==0)||($MinutoInic==0)){if($MinutoFim==0){$MinutoFim=60;}if($MinutoInic==0){$MinutoInic=60;}}if(($HoraFim==0)||($HoraInic==0)){if($HoraFim==0){$HoraFim=59;}if($HoraInic==0){$HoraInic=59;}}$SubSeg=$SegundoFim-$SegundoInic;$SubSeg=str_replace("-","",$SubSeg);$SubMin=$MinutoFim-$MinutoInic;$SubMin=str_replace("-","",$SubMin);$SubHora=$HoraFim-$HoraInic;$SubHora=str_replace("-","",$SubHora);if(strlen($SubHora)==1)$SubHora="0".$SubHora;if(strlen($SubMin)==1)$SubMin="0".$SubMin;if(strlen($SubSeg)==1)$SubSeg="0".$SubSeg;$Tempo02=$SubHora.":".$SubMin.":".$SubSeg;return $Tempo02;}function valorPorExtenso($valor=0){$singular=array("centavo","real","mil","milhão","bilhão","trilhão","quatrilhão");$plural=array("centavos","reais","mil","milhões","bilhões","trilhões","quatrilhões");$c=array("","cem","duzentos","trezentos","quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos");$d=array("","dez","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa");$d10=array("dez","onze","doze","treze","quatorze","quinze","dezesseis","dezesete","dezoito","dezenove");$u=array("","um","dois","três","quatro","cinco","seis","sete","oito","nove");$z=0;$valor=number_format($valor,2,".",".");$inteiro=explode(".",$valor);for($i=0;$i<count($inteiro);$i++)for($ii=strlen($inteiro[$i]);$ii<3;$ii++)$inteiro[$i]="0".$inteiro[$i];$fim=count($inteiro)-($inteiro[count($inteiro)-1]>0?1:2);for($i=0;$i<count($inteiro);$i++){$valor=$inteiro[$i];$rc=(($valor>100)&&($valor<200))?"cento":$c[$valor[0]];$rd=($valor[1]<2)?"":$d[$valor[1]];$ru=($valor>0)?(($valor[1]==1)?$d10[$valor[2]]:$u[$valor[2]]):"";$r=$rc.(($rc&&($rd||$ru))?" e ":"").$rd.(($rd&&$ru)?" e ":"").$ru;$t=count($inteiro)-1-$i;$r.=$r?" ".($valor>1?$plural[$t]:$singular[$t]):"";if($valor=="000")$z++;elseif($z>0)$z--;if(($t==1)&&($z>0)&&($inteiro[0]>0))$r.=(($z>1)?" de ":"").$plural[$t];if($r)$rt=$rt.((($i>0)&&($i<=$fim)&&($inteiro[0]>0)&&($z<1))?(($i<$fim)?", ":" e "):" ").$r;}return($rt?$rt:"zero");}function Iniciais($vencimento_pro_rata){$partes=explode(" ",$vencimento_pro_rata);$ret='';foreach($partes as $parte)if(strlen($parte)>3)$ret.=substr($parte,0,1).".";return $ret;}function f_DiaSemana($data){list($ano,$mes,$dia)=explode("-",$data);$diasemana=date("w",mktime(0,0,0,$mes,$dia,$ano));switch($diasemana){case 0:$diasemana="Domingo";break;case 1:$diasemana="Segunda-Feira";break;case 2:$diasemana="Terça-Feira";break;case 3:$diasemana="Quarta-Feira";break;case 4:$diasemana="Quinta-Feira";break;case 5:$diasemana="Sexta-Feira";break;case 6:$diasemana="Sábado";break;}return $diasemana;}function limitarTexto($string,$tamanho){if(strlen($string)>$tamanho)$string=mb_substr($string,0,$tamanho-3).'...';else $string=mb_substr($string,0,$tamanho);return $string;}function get_feeds($url){$content=simplexml_load_file($url);if(!isset($content->channel)){die('Conteúdo rss não é válido');}$itens=$content->channel;return $itens;}function f_TagDiferencaDias($DataFinal,$DataAtual){$data1=new DateTime($DataFinal);$data2=new DateTime($DataAtual);$intervalo=$data1->diff($data2);unset($ClasseCor);if($intervalo->d==0){$ClasseCor=" hot";}else if($intervalo->d==1){$ClasseCor=" hot";}else{$Retorno=$intervalo->d." dias";if($intervalo->d==2){$ClasseCor=" hot";}else if($intervalo->d==3){$ClasseCor=" new";}else{$ClasseCor=" sale";}}return $ClasseCor;}function f_DiferencaDias($DataFinal,$DataAtual){$data1=new DateTime($DataFinal);$data2=new DateTime($DataAtual);$intervalo=$data1->diff($data2);unset($Retorno);if($intervalo->d==0){$Retorno="hoje!";}else if($intervalo->d==1){$Retorno=$intervalo->d." dia";}else{$Retorno=$intervalo->d." dias";}return $Retorno;}function f_AbreviaNome($Nome){$quantidade=strlen($Nome);$maximo_caracter=15;if($quantidade<$maximo_caracter){return $Nome;}$Nome=explode(" ",$Nome);$num=count($Nome);$novo_nome='';$espacos=" ";$count=1;foreach($Nome as $var){if(($count==1)||($count==$num)){$novo_nome.=$var.' ';}if(($count>=2)&&($count<$num)){$array=array('do','Do','DO','da','Da','DA','de','De','DE','dos','Dos','DOS','das','Das','DAS');if(in_array($var,$array)){}else{$novo_nome.=substr($var,0,1).'. ';}}$count++;}return $novo_nome;}function f_PastaFranquia($CdFranquia,$DataBase){unset($RetornoPastaCli);if(trim($CdFranquia)!=""){$cSQL="SELECT franquia.pasta\n\t\t\t\t   FROM franquia\n\t\t\t\t  WHERE franquia.cd_franquia = ".f_VerificaValorNumericoNulo($CdFranquia)."\n\t\t\t\t\tAND franquia.status = 'ATIVO'\n\t\t\t\t  LIMIT 1";unset($oRSpasta);unset($ResultPasta);$oRSpasta=mysqli_query($DataBase,$cSQL)or die(mysqli_error($DataBase));$ResultPasta=mysqli_fetch_array($oRSpasta);$RetornoPastaCli=$ResultPasta['pasta'];}return $RetornoPastaCli;}function f_PastaTransportadora($CdTransportadora,$DataBase){unset($RetornoPastaCli);if(trim($CdTransportadora)!=""){$cSQL="SELECT transportadora.pasta\n\t\t\t\t   FROM transportadora\n\t\t\t\t  WHERE transportadora.cd_transportadora = ".f_VerificaValorNumericoNulo($CdTransportadora)."\n\t\t\t\t\tAND transportadora.status = 'ATIVO'\n\t\t\t\t  LIMIT 1";unset($oRSpasta);unset($ResultPasta);$oRSpasta=mysqli_query($DataBase,$cSQL)or die(mysqli_error($DataBase));$ResultPasta=mysqli_fetch_array($oRSpasta);$RetornoPastaCli=$ResultPasta['pasta'];}return $RetornoPastaCli;}function f_PastaFornecedor($CdTransportadora,$DataBase){unset($RetornoPastaCli);if(trim($CdTransportadora)!=""){$cSQL="SELECT fornecedor.pasta\n\t\t\t\t   FROM fornecedor\n\t\t\t\t  WHERE fornecedor.cd_fornecedor = ".f_VerificaValorNumericoNulo($CdTransportadora)."\n\t\t\t\t\tAND fornecedor.status = 'ATIVO'\n\t\t\t\t  LIMIT 1";unset($oRSpasta);unset($ResultPasta);$oRSpasta=mysqli_query($DataBase,$cSQL)or die(mysqli_error($DataBase));$ResultPasta=mysqli_fetch_array($oRSpasta);$RetornoPastaCli=$ResultPasta['pasta'];}return $RetornoPastaCli;}function tratamentoAcentos($str){$str=$str;$caracteresPerigosos=array("Ã","ã","Õ","õ","á","Á","é","É","í","Í","ó","Ó","ú","Ú","ç","Ç","à","À","è","È","ì","Ì","ò","Ò","ù","Ù","ä","Ä","ë","Ë","ï","Ï","ö","Ö","ü","Ü","Â","Ê","Î","Ô","Û","â","ê","î","ô","û","º","ª");$caracteresLimpos=array("A","a","O","o","a","A","e","E","i","I","o","O","u","U","c","C","a","A","e","E","i","I","o","O","u","U","a","A","e","E","i","I","o","O","u","U","A","E","I","O","U","a","e","i","o","u",".",".");$str=str_replace($caracteresPerigosos,$caracteresLimpos,$str);return addslashes($str);}function geolocal($endereco,$sensor=false){$sensor=($sensor)?'true':'false';$endereco=utf8_encode(str_replace(" ","+",$endereco));$url='http://maps.googleapis.com/maps/api/geocode/xml?address='.$endereco.'&sensor='.$sensor;$xml=simplexml_load_file($url);$latitude=$xml->result->geometry->location->lat;$longitude=$xml->result->geometry->location->lng;$cep=$xml->result->address_component[6]->long_name;$pais=$xml->result->address_component[5]->long_name;return array('lat'=>$latitude,'lon'=>$longitude,'cep'=>$cep,'pais'=>$pais);}function f_PerfilPermissao($CdUsuario,$CdPerfil,$DataBase){if((trim($CdUsuario)!="")&&(trim($CdPerfil)!="")){$cSQL="DELETE FROM perfil_usuario\n                       WHERE cd_usuario = ".f_VerificaValorNumericoNulo($CdUsuario)."\n                         AND cd_perfil = ".f_VerificaValorNumericoNulo($CdPerfil);mysqli_query($DataBase,$cSQL)or die(mysqli_error($DataBase));$cSQL="SELECT *\n\t\t\t\t   FROM perfil_permissao\n\t\t\t\t  WHERE perfil_permissao.cd_perfil = ".f_VerificaValorNumericoNulo($CdPerfil)."\n\t\t\t\t\tAND perfil_permissao.status = 'ATIVO'";unset($oRSPerfil);unset($ResultPerfil);$oRSPerfil=mysqli_query($DataBase,$cSQL)or die(mysqli_error($DataBase));while($ResultPerfil=mysqli_fetch_array($oRSPerfil)){$cSQL="INSERT INTO perfil_usuario\n\t\t\t\t\t\t\t\t (cd_perfil,\n\t\t\t\t\t\t\t\t  cd_usuario,\n\t\t\t\t\t\t\t\t  cd_aplic,\n\t\t\t\t\t\t\t\t  permissao_cadastro,\n\t\t\t\t\t\t\t\t  permissao_alteracao,\n\t\t\t\t\t\t\t\t  permissao_exclusao,\n\t\t\t\t\t\t\t\t  permissao_informacao_detalhe,\n\t\t\t\t\t\t\t\t  cd_cad,\n\t\t\t\t\t\t\t\t  dt_cad,\n\t\t\t\t\t\t\t\t  hr_cad,\n\t\t\t\t\t\t\t\t  ip_cad,\n\t\t\t\t\t\t\t\t  cd_tipo_acesso_cad)\n\t\t\t\t\t\tVALUES ( ".f_VerificaValorNumericoNulo($ResultPerfil['cd_perfil']).",\n\t\t\t\t\t\t         ".f_VerificaValorNumericoNulo($CdUsuario).",\n\t\t\t\t\t\t\t\t ".f_VerificaValorNumericoNulo($ResultPerfil['cd_aplic']).",\n\t\t\t\t\t\t\t\t ".f_VerificaValorStringNulo($ResultPerfil['permissao_cadastro']).",\n\t\t\t\t\t\t\t\t ".f_VerificaValorStringNulo($ResultPerfil['permissao_alteracao']).",\n\t\t\t\t\t\t\t\t ".f_VerificaValorStringNulo($ResultPerfil['permissao_exclusao']).",\n\t\t\t\t\t\t\t\t ".f_VerificaValorStringNulo($ResultPerfil['permissao_informacao_detalhe']).",\n\t\t\t\t\t\t\t\t ".trim($_SESSION["s_CdUsr"]).",\n\t\t\t\t\t\t\t\t current_date,\n\t\t\t\t\t\t\t\t current_time,\n\t\t\t\t\t\t\t\t ".f_VerificaValorStringNulo($_SESSION["s_Ip"]).",\n\t\t\t\t\t\t\t\t ".f_VerificaValorNumericoNulo($_SESSION["s_CdTipoAcesso"]).")";mysqli_query($DataBase,$cSQL)or die(mysqli_error($DataBase));}}}function f_RetornaEndereco($Latitude,$Longitude){if(($Latitude!="")&&($Latitude!="NULL")){$fullurl="https://maps.googleapis.com/maps/api/geocode/json?key=".$_SESSION["s_KeyMapa"]."&latlng=".$Latitude.",".$Longitude."&sensor=false";$ch=curl_init();curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);curl_setopt($ch,CURLOPT_URL,$fullurl);$result=curl_exec($ch);curl_close($ch);$retornojson=json_decode($result,true);$retorno=($retornojson['results'][0]['formatted_address']);return $retorno;}}
+
+function f_LimpaString($ValorP)
+{
+    $ValorRetorno = str_replace(")","",str_replace("(","",str_replace("/","",str_replace("-","",str_replace(".","",str_replace(" ","",$ValorP))))));
+
+    return $ValorRetorno;
+}
+
+function f_EnviaSMS($url)
+{
+    $ch = curl_init();
+
+    curl_setopt($ch,CURLOPT_URL,$url);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+//  curl_setopt($ch,CURLOPT_HEADER, false);
+
+    $output=curl_exec($ch);
+
+    curl_close($ch);
+    return $output;
+}
+
+function f_CriptografaSenhaApp($Senha)
+{
+    $SenhaCrip = md5(base64_encode("sSCryptoxXAdminVeículoD").$Senha.base64_encode("VeículoCrypMd5SistXxB"));
+
+    return $SenhaCrip;
+}
+
+function f_EnviaComandoEquipamentoSMS($CdEquipamento,$CdComando,$Parametro,$DataBase)
+{
+    if(($CdEquipamento != "") && ($CdComando != "") && ($DataBase))
+    {
+        $cSQL = "SELECT equipamento.nr_equipamento,
+                        equipamento.cd_equipamento,
+                        equipamento.cd_equipamento_modelo,
+                        equipamento_marca.ip_comunicacao,
+                        equipamento_marca.porta_comunicacao,
+                        equipamento_marca.tempo_minimo,
+                        equipamento_marca.tempo_maximo,
+                        chip.chip,
+                        chip.apn,
+                        chip.login,
+                        chip.senha
+                   FROM chip,
+                        chip_equipamento,
+                        equipamento_marca,
+                        equipamento
+                  WHERE equipamento.cd_equipamento = ".f_VerificaValorNumericoNulo($CdEquipamento)."
+                    AND equipamento.status = 'ATIVO'
+                    AND chip_equipamento.status = 'ATIVO'
+                    AND chip.status = 'ATIVO'
+                    AND equipamento.cd_equipamento_marca = equipamento_marca.cd_equipamento_marca
+                    AND equipamento.cd_equipamento = chip_equipamento.cd_equipamento
+                    AND chip_equipamento.cd_chip = chip.cd_chip
+                  LIMIT 1";
+
+        #echo $cSQL."<br>";
+        unset($oRS);
+        unset($Result);
+        $oRS = mysqli_query($DataBase,$cSQL) or die(mysqli_error($DataBase));
+        $Result = mysqli_fetch_array($oRS);
+        $Chip = trim(substr(trim(str_replace(' ','',$Result['chip'])),2,11));
+
+        ### BUSCANDO O COMANDO DE ATIVAÇAO ###
+        if($Result['cd_equipamento_modelo'] != "")
+        {
+            ### ENVIANNDO COMANDO AO RASTREADOR ###
+            $cSQL = "SELECT *
+                       FROM configuracao";
+
+            #echo $cSQL;
+            unset($oRSConfig);
+            unset($ResultConfig);
+            $oRSConfig = mysqli_query($DataBase, $cSQL) or die(mysqli_error($DataBase));
+            $ResultConfig = mysqli_fetch_array($oRSConfig);
+
+
+            $cSQL = "SELECT equipamento_comando.comando,
+                            equipamento_comando.cd_equipamento_comando
+                       FROM equipamento_comando
+                      WHERE equipamento_comando.cd_equipamento_comando = ".f_VerificaValorNumericoNulo($CdComando)."
+                        AND equipamento_comando.status = 'ATIVO'";
+
+            #echo $cSQL."<br>";
+            unset($oRSComando);
+            unset($ResultComando);
+            $oRSComando = mysqli_query($DataBase, $cSQL) or die(mysqli_error($DataBase));
+            $ResultComando = mysqli_fetch_array($oRSComando);
+
+            ### VERIFICANDO SE TEM PARAMETROS O COMANDO ###
+            ### VERIFICANDO SE TEM PARAMETROS O COMANDO ###
+            unset($ComandoParametros);
+            unset($ComandoParametros2);
+            if($Parametro[0] != "")
+            {
+                foreach ($Parametro as $Parametros)
+                {
+                    $ComandoParametros .= $Parametros.',';
+                }
+                $ComandoParametros2 = substr($ComandoParametros,0,-1);
+            }
+
+            unset($ComandoAtivacao);
+            if($ResultComando['comando'] != "")
+            {
+                $ComandoAtivacao = str_replace('###TEMPO_MINIMO###',$Result['tempo_minimo'],str_replace('###TEMPO_MAXIMO###',$Result['tempo_maximo'],str_replace(' ','%20',(str_replace('###SENHA_CHIP###', $Result['senha'], str_replace('###LOGIN_CHIP###', $Result['login'], str_replace('###APN_OPERADORA###', $Result['apn'],str_replace('###IP###',$Result['ip_comunicacao'],str_replace('###PORTA###',$Result['porta_comunicacao'],  str_replace('###VARIAVEL###', $ComandoParametros2, $ResultComando['comando']))))))))));
+            }
+            #echo $ComandoAtivacao;
+
+            unset($EnviaSMS);
+            unset($Retorno);
+            $EnviaSMS = "http://209.133.205.2/painel/api.ashx?action=sendsms&lgn=" . trim($ResultConfig['sms_login']) . "&pwd=" . trim($ResultConfig['sms_senha']) . "&msg=" . trim($ComandoAtivacao) . "&numbers=" . trim($Chip) . "&url_callback=" . trim($ResultConfig['sms_url_retorno']);
+            #echo $EnviaSMS;
+            $Retorno = f_EnviaSMS($EnviaSMS);
+            #echo $Retorno;
+            $Valor = explode(':', $Retorno);
+
+            ### HISTORICO DE ENVIO MENSAGENS ###
+            if (trim(str_replace('}', '', str_replace('"', '', $Valor[3]))) == "SUCESSO")
+            {
+                $cSQL = "INSERT INTO historico_equipamento_comando_enviado
+                                     (cd_equipamento_comando,
+                                      cd_equipamento_modelo,
+                                      cd_equipamento,
+                                      comando,
+                                      cd_cad,
+                                      dt_cad,
+                                      hr_cad,
+                                      ip_cad,
+                                      cd_tipo_acesso_cad)
+                              VALUES (" . f_VerificaValorNumericoNulo($ResultComando['cd_equipamento_comando']) . ",
+                                      " . f_VerificaValorNumericoNulo($Result['cd_equipamento_modelo']) . ",
+                                      " . f_VerificaValorNumericoNulo($Result['cd_equipamento']) . ",
+                                      " . f_VerificaValorStringNulo($ComandoAtivacao) . ",
+                                      " . trim($_SESSION["s_CdUsr"]) . ",
+                                      current_date,
+                                      current_time,
+                                      " . f_VerificaValorStringNulo($_SESSION["s_Ip"]) . ",
+                                      " . f_VerificaValorNumericoNulo($_SESSION["s_CdTipoAcesso"]) . ")";
+
+                #echo $cSQL;
+                mysqli_query($DataBase, $cSQL) or die(mysqli_error($DataBase));
+            }
+        }
+    }
+}
+?>
